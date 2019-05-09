@@ -373,16 +373,17 @@ const blastData = {
     }
   ]
 };
-let centerCoordinate = {};
-let result = [];
-blastData.features.forEach(function(item) {
-  centerCoordinate[item.geometry.coordinates] = true;
-  result = Object.entries(centerCoordinate).map(value => ({ [value[0]]: value[1] }));
-});
+function getUniqueCoordinateArray(){
+  const coordinates= {}
+  blastData.features.forEach(function(item){
+     coordinates[item.geometry.coordinates] = item.geometry.coordinates;
+  })
+  return Object.keys(coordinates).map(function(item){
+    return coordinates[item]
+  })
+}
 
-console.log(result);
-
-//create circle
+//create circle given a radiusn km and center points
 function geoJSONCircleRadius(center, radiusInKm, points) {
   if (!points) points = 64;
 
